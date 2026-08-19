@@ -1,0 +1,60 @@
+<?php
+
+if(isset($_POST['_arrValues_']))
+{
+    $arrValores  = $_POST['_arrValues_'];
+
+    $id            = $arrValores[0]['_id_'];
+    $pregunta      = $arrValores[0]['_pregunta_'];
+    $tipo          = $arrValores[0]['_tipo_'];
+    $identificador = $arrValores[0]['_identificador_'];
+    $sucursal      = $arrValores[0]['_sucursal_'];
+    $str_tipo4     = $arrValores[0]['_str_tipo4_'];
+    $str_tipo9     = $arrValores[0]['_str_tipo9_'];
+
+    require 'conexion.php';
+    $conexion = new conexion();
+
+    $caracteresProhibidos = array(',');
+
+    $sql = "";
+
+    if($tipo == 0  || $tipo == 1  || $tipo == 3  || $tipo == 5  ||  $tipo == 6 )
+    {
+        $sql = "UPDATE cuestionario SET pregunta='$pregunta', valor=$tipo, textos='' WHERE id = $id AND identificador=$identificador AND sucursal='$sucursal'";
+    }
+    elseif($tipo == 4)
+    {
+
+	$str_tipo4 = str_replace($caracteresProhibidos, "", $str_tipo4);
+        $sql = "UPDATE cuestionario SET pregunta='$pregunta', valor=$tipo, textos='$str_tipo4' WHERE id = $id AND identificador=$identificador AND sucursal='$sucursal'";       
+    }
+    elseif($tipo == 9)
+    {
+	
+        $sql = "UPDATE cuestionario SET pregunta='$pregunta', valor=$tipo, textos='$str_tipo9' WHERE id = $id AND identificador=$identificador AND sucursal='$sucursal'";        
+    }
+
+    $returnValue = 0;
+
+    try
+    {
+        $update = mysqli_query($conexion->getConexion(), $sql);
+        $rows_alterados_up=mysqli_affected_rows($conexion->getConexion());
+        if(!$update)
+        {
+            $returnValue = 0;            
+        }
+        else
+        {
+            $returnValue = 1;
+        }
+        
+        echo $returnValue;
+    }
+    catch(Exception $e){
+        echo $e->getMessage();
+    }
+    
+    $conexion->closeConexion();
+}
