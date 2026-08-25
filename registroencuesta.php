@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('America/Mexico_City');
+date_default_timezone_set('America/Mazatlan');
 include 'functions.php';
 //$idusr = $_GET['idusr'];
 $folio  = $_GET['folio'];
