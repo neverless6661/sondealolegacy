@@ -1,8 +1,6 @@
 <?php
-
 date_default_timezone_set('America/Mazatlan');
 include 'functions.php';
-
 //$idusr = $_GET['idusr'];
 $folio  = $_GET['folio'];
 $mesa   = $_GET['mesa'];
@@ -43,7 +41,6 @@ $repartidor    = $_GET['repartidor'];
 
 
 /*informacion adicional capturada vendedor(bernini)*/
-
 
 $fv1 = isset($_GET['fv1']) ? trim( $_GET['fv1'] ) : '';
 $fv2 = isset($_GET['fv2']) ? trim( $_GET['fv2'] ) : '';
@@ -223,7 +220,6 @@ $conexion_n = new conexion();
 
 /* ----------------------- insertar en tabla promedios ----------------------------*/
 
-
 $sumador_prom           = 0;
 $contador_prom          = 0;
 $sql_preguntas_promedio = "SELECT id, valor FROM cuestionario WHERE sucursal = '$sucursal' AND (  (valor = 0 OR valor = 5) OR (valor = 4 AND valor2 = 1) )  ORDER BY id ASC";
@@ -278,7 +274,7 @@ if($sucursal == 'bernini')
 /*-------------------------- inicia notificacion detallada ---------------------------------------------------*/
 
 
-$arreglo_campos_bd = array('1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '1.0', '10', '10.0', '0.5', '', '');
+$arreglo_campos_bd = array('eval', 'eval2', 'eval3', 'eval4', 'eval5', 'eval6', 'eval7', 'eval8', 'eval9', 'eval10', 'eval11', 'eval12');
 
 $sql_notificacion_detallada   = "SELECT notificacion_detallada FROM sucursales WHERE sucursal='$sucursal'";
 $check_notificacion_detallada = mysqli_query($conexion_n->getConexion(), $sql_notificacion_detallada);
@@ -343,14 +339,6 @@ if (count($arreglo_tokens_enviar) == 0) {
 }
 
 mysqli_free_result($tokens);
-
-$registrationIds = array_values(array_unique($arreglo_tokens_enviar));
-
-$tokens = [
-    'e0gOrfFKTX-5XJhlmoTb_5:APA91bGq54ev0VqXPdwqJHYDYodjGUJ3bz8Xf9-o4nKUa_EwPpxnQgInwdR482J3ccg6ifwx7VLqLdxE7hbYOxrwVI4FIU_U56Zmq-BfNbM4xWqtUBAOrAo',
-    'eykJkOzoew4:APA91bGzAfFZIwtUGNhoQbzrKLdnkYVCx8t8JXKFZrJ11G4ke81Cti6tGBIewE0BEE1UsZc5slLgeyadSWNl-gLgW9-LFZ6RoKDFwQSgtJTZtvq9_qTRa8lkcLD15pz-lRhke6O8tU2b',
-    'doCaQW_Bh5Y:APA91bHV4UdrY8Mb9SObq1xbyUpjYcbpOHlvbrMzgSryjIxfYX4nQl1K-SQddk7Uv9z8MkWVA315pBuv3Gga5OaMtp1k_Wq1F-sKbwKt8N9Cyceg5mD0qNuhI_Zs1MUDV7LrFCB5hTlT'
-];
 
 
 // ==========================================
@@ -447,6 +435,7 @@ function sendFcmNotification($project_id, $access_token, array $deviceTokens, $t
         
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         $results[$token] = [
             'status' => $httpCode,
             'response' => json_decode($response, true)
@@ -478,4 +467,48 @@ if ($accessToken) {
 } else {
     echo "Error al obtener el Access Token de OAuth2.";
 }
+
 ?>
+
+/*
+
+//declaramos una constante como llave de acceso al servidor firebase
+define('API_ACCESS_KEY', 'AAAAryQC3Bo:APA91bGXnR7fvPEW5kovmSJj_ZspYRCEnfWT3DGpn3fW1Ro6OzJWo6ybKF8n_HOdB-b6fKUOF6ajg5R7nmOf4gJL3oM617vqfCqw-qxUCGanibHSUQy8N5vMx7jJMLEThxjKKh1ObAtM');
+
+$registrationIds = array_values(array_unique($arreglo_tokens_enviar));
+
+$fecha_formato_diagonal = date('d/m/Y');
+$hora_formato           = date('H:i:s');
+
+$msg = array
+	(
+	'body'  => 'Se registró una mala calificación en ' . $sucursal . ' a las ' . $hora_formato,
+	'title' => 'Mala calificación ' . $fecha_formato_diagonal,
+	'icon'  => 'myicon',
+	'sound' => 'mySound',
+	'badge' => '1',
+);
+$fields = array
+	(
+	'registration_ids' => $registrationIds,
+	'notification'     => $msg);
+
+$headers = array
+	(
+	'Authorization: key=' . API_ACCESS_KEY,
+	'Content-Type: application/json',
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+curl_exec($ch);
+curl_close($ch);
+
+$conexion_n->closeConexion();
+
+*/

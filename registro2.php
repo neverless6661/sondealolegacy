@@ -111,11 +111,11 @@ if ($accessToken) {
 } else {
     echo "Error al obtener el Access Token de OAuth2.";
 }
-?>
 
 
 
-<?php
+
+
 function sendFcmNotification2($project_id, $access_token, array $deviceTokens, $title, $body, $customData = []) {
     $url = "https://fcm.googleapis.com/v1/projects/{$project_id}/messages:send";
 
@@ -163,9 +163,9 @@ function sendFcmNotification2($project_id, $access_token, array $deviceTokens, $
 
 // Ejemplo de uso:
 $tokens = [
-    'TOKEN_DISPOSITIVO_1',
-    'TOKEN_DISPOSITIVO_2',
-    'TOKEN_DISPOSITIVO_3'
+    'e0gOrfFKTX-5XJhlmoTb_5:APA91bGq54ev0VqXPdwqJHYDYodjGUJ3bz8Xf9-o4nKUa_EwPpxnQgInwdR482J3ccg6ifwx7VLqLdxE7hbYOxrwVI4FIU_U56Zmq-BfNbM4xWqtUBAOrAo',
+    'e0gOrfFKTX-5XJhlmoTb_5:APA91bGq54ev0VqXPdwqJHYDYodjGUJ3bz8Xf9-o4nKUa_EwPpxnQgInwdR482J3ccg6ifwx7VLqLdxE7hbYOxrwVI4FIU_U56Zmq-BfNbM4xWqtUBAOrAo',
+    'e0gOrfFKTX-5XJhlmoTb_5:APA91bGq54ev0VqXPdwqJHYDYodjGUJ3bz8Xf9-o4nKUa_EwPpxnQgInwdR482J3ccg6ifwx7VLqLdxE7hbYOxrwVI4FIU_U56Zmq-BfNbM4xWqtUBAOrAo'
 ];
 
 $respuestas = sendFcmNotification('tu-project-id', $accessToken, $tokens, 'Título', 'Mensaje');
